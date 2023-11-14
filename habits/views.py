@@ -1,7 +1,5 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-
 from habits.models import Habit
 from habits.paginators import HabitListPaginator
 from habits.permissions import IsCreator
@@ -56,4 +54,3 @@ class DestroyHabitAPIView(generics.DestroyAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
     permission_classes = [IsCreator]
-

@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
@@ -73,24 +72,17 @@ class HabitsTestCase(APITestCase):
         self.assertEqual(response.data['count'], 1)
 
     def test_list_validators(self):
-        data = {
-            'is_pleasant': True,
-            'connected_habit': self.habit.id,
-            }
+        data = {'is_pleasant': True, 'connected_habit': self.habit.id, }
         self.client.force_authenticate(user=self.user)
         response = self.client.patch(reverse('habits:update-habit', args=[self.habit.id]), data=data)
         self.assertEqual(response.data, {'non_field_errors': [ErrorDetail(string='В связанные привычки могут попадать только привычки с признаком приятной привычки.', code='invalid')]})
 
-        data = {
-            'is_pleasant': True,
-            'reward': 'reward',
-            }
+        data = {'is_pleasant': True, 'reward': 'reward', }
         self.client.force_authenticate(user=self.user)
         response = self.client.patch(reverse('habits:update-habit', args=[self.habit.id]), data=data)
         self.assertEqual(response.data, {'non_field_errors': [ErrorDetail(string='У приятной привычки не может быть вознаграждения', code='invalid')]})
 
-        data = {'time_to_complete': '1000',}
+        data = {'time_to_complete': '1000', }
         self.client.force_authenticate(user=self.user)
         response = self.client.patch(reverse('habits:update-habit', args=[self.habit.id]), data=data)
         self.assertEqual(response.data, {'non_field_errors': [ErrorDetail(string='Время выполнения привычки не может быть больше 120 секунд.', code='invalid')]})
-
