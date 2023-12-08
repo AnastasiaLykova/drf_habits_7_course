@@ -1,4 +1,5 @@
 # Project exclude paths
+pg_data
 /env/
 .env
 .idea
